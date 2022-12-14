@@ -70,12 +70,12 @@ class Patients(db.Model):
     contact_home = db.Column(db.String(255), nullable=True)
 
     # this first function __init__ is to establish the class for python GUI
-    def __init__(self, mrn, first_name, last_name, zip_code, gender, dob = None,contact_mobile =None, contact_home=None):
+    def __init__(self, mrn, first_name, last_name, zip_code, dob, gender, contact_mobile, contact_home):
         self.mrn = mrn
         self.first_name = first_name
         self.last_name = last_name
         self.zip_code = zip_code
-        self.dob = dob 
+        self.dob = dob
         self.gender = gender
         self.contact_mobile = contact_mobile
         self.contact_home = contact_home
@@ -258,12 +258,9 @@ def register_admin():
     elif request.method == 'POST':
         # Form is empty... (no POST data)
         msg = 'Please fill out the form!'
-    if msg == "You have successfully registered a ADMIN account!":
-        return redirect(url_for('index'))
-    else:
-        # Show registration form with message (if any)
-        return render_template('register_admin.html', msg=msg)
-    
+    # Show registration form with message (if any)
+    return render_template('register_admin.html', msg=msg)
+
 
 @app.route('/register/patient', methods=['GET', 'POST'])
 def register_patient():
@@ -433,7 +430,7 @@ def insert(): # note this function needs to match name in html form action
         last_name = request.form['last_name']
         gender = request.form['gender']
         zip_code = request.form['zip_code']
-        new_patient = Patients(mrn, first_name, last_name,zip_code,gender)
+        new_patient = Patients(mrn, first_name, last_name, gender, zip_code)
         db.session.add(new_patient)
         db.session.commit()
         flash("Patient Inserted Successfully")
@@ -455,20 +452,6 @@ def update(): # note this function needs to match name in html form action
         db.session.commit()
         flash("Patient Updated Successfully")
         return redirect(url_for('get_gui_patients'))
-
-# this endpoint is for updating user account info 
-@app.route('/update_user', methods = ['GET', 'POST'])
-def update_user(): # note this function needs to match name in html form action
-    if request.method == 'POST':
-        ## get mrn from form
-        form_username = request.form.get('user_name')
-        user = Users.query.filter_by(username=form_username).first()
-        user.username = request.form.get('user_name')
-        user.email = request.form.get('email_address')
-        user.password = request.form.get('password')
-        db.session.commit()
-        flash("User Account has been Updated Successfully")
-        return redirect(url_for('account'))
 
 #This route is for deleting our patients
 @app.route('/delete/<string:mrn>', methods = ['GET', 'POST'])
