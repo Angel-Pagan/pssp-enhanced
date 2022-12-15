@@ -1,5 +1,3 @@
-<!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -72,7 +70,7 @@
         -webkit-overflow-scrolling: touch;
       }
     </style>
-
+  
     
     <!-- Custom styles for this template -->
     <!-- IMPORTANT we can then override some of the default settings, and load in a 2nd CSS file -->
@@ -80,27 +78,75 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}"> 
 
   </head>
+  <head>
+    <style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    
+    li {
+      float: left;
+      border-right:1px solid #bbb;
+    }
+    
+    li:last-child {
+      border-right: none;
+    }
+    
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+    
+    .active {
+      background-color: #04AA6D;
+    }
+    </style>
+    </head>
+  <ul>
+    <li><a href="/login" class="btn btn-primary btn-lg px-4 gap-3" >Click Here to Sign-in</a></li>
+    <li><a href="/register" class="btn btn-secondary btn-lg px-4" >Click Here to register for an account</a></li>
+  </ul>
   <body>
     
-<div class="col-lg-8 mx-auto p-4 py-md-5">
-  <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
-    <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-      <span class="fs-4">Patient Self Service Portal (PssP)</span>
-    </a>
-  </header>
 
-  <main>
-    <h1>Get started with your patient portal now!</h1>
-    <p class="fs-5 col-md-8"> Start by either registering a new account, or sign-in to a existing account</p>
 
-    <div class="mb-5">
-      <a href="/login" class="btn btn-primary btn-lg px-4">Sign in</a>
-      <a href="/register" class="btn btn-primary btn-lg px-4">Register</a>
+
+    <div class="px-4 py-5 my-5 text-center">
+      <h1 class="display-5 fw-bold">Welcome to Patient Portal, Your Medical Home on the Web</h1>
+      <img class="d-block mx-auto mb-4" src="data:image/jpeg;base64,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" alt="PssP" width="500" height="500">
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">With Patient Portal, you can connect with your doctor through a convenient, safe and secure environmen</p>
+      </div>
     </div>
 
-    <hr class="col-3 col-md-2 mb-5">
+  <div class="b-example-divider"></div>
 
-  </main>
+  <div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">What's a patient portal and how does it benefit me? </h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">The patient portal is an online site where individuals can access personal health information such as doctor visits and appointments, lab results, medication records, etc. During the Coronavirus Pandemic, this will be a great resource for individuals to keep track of health information and communicate with medical personnel. </p>
+      <iframe width="420" height="315"
+      src="https://www.youtube.com/embed/9GzXSva8HXg">
+      </iframe>
+      <h1 class="display-6 fw-bold">Login in / Sign-Up </h1>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      </div>
+      </div>
+    </div>
+  </div>
+  
   <footer class="pt-5 my-5 text-muted border-top">
     Created by AHI Program  &middot; &copy; 2022
   </footer>
