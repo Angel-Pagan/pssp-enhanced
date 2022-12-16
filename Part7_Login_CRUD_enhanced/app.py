@@ -59,7 +59,7 @@ class Users(db.Model):
 class Patients(db.Model):
     __tablename__ = 'patients'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) 
     mrn = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
@@ -70,7 +70,7 @@ class Patients(db.Model):
     contact_home = db.Column(db.String(255), nullable=True)
 
     # this first function __init__ is to establish the class for python GUI
-    def __init__(self, mrn, first_name, last_name, zip_code, dob, gender, contact_mobile, contact_home):
+    def __init__(self, mrn, first_name, last_name, zip_code, dob, gender, contact_mobile, contact_home = None):
         self.mrn = mrn
         self.first_name = first_name
         self.last_name = last_name
@@ -260,6 +260,7 @@ def register_admin():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('register_admin.html', msg=msg)
+    
 
 
 @app.route('/register/patient', methods=['GET', 'POST'])
@@ -428,9 +429,11 @@ def insert(): # note this function needs to match name in html form action
         mrn = request.form['mrn']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
-        gender = request.form['gender']
         zip_code = request.form['zip_code']
-        new_patient = Patients(mrn, first_name, last_name, gender, zip_code)
+        contact_home=request.form['contact_home']
+        contact_mobile=request.form['contact_mobile']
+        gender = request.form['gender']
+        new_patient = Patients( mrn, first_name, last_name, zip_code,contact_home,gender, contact_mobile)
         db.session.add(new_patient)
         db.session.commit()
         flash("Patient Inserted Successfully")
@@ -547,6 +550,19 @@ def delete_condition(): # note this function needs to match name in html form ac
         ## then return to patient details page
         return redirect(url_for('get_patient_details', mrn=form_mrn))
 
+    #this endpoint is for editing a users account details 
+@app.route('/update_user', methods = ['GET', 'POST'])
+def update_user(): # note this function needs to match name in html form action
+    if request.method == 'POST':
+        ## get id from form
+        form_id = request.form.get('id')
+        user = Users.query.filter_by(id=form_id).first()
+        user.username = request.form.get('username')
+        user.email = request.form.get('email')
+        db.session.commit()
+        flash("User Account Updated Successfully")
+        return redirect(url_for('account'))
+
 
 
 
@@ -585,7 +601,11 @@ def create_patient():
     patient = Patients(
         mrn=request.json.get('mrn'),
         first_name=request.json.get('first_name'),
-        last_name=request.json.get('last_name')
+        last_name=request.json.get('last_name'),
+        zip_code=request.json.get('zip_code'),
+        gender=request.json.get('gender'),
+        contact_home=request.json.get('contact_home'),
+        contact_mobile=request.json.get('contact_mobile')
     )
     db.session.add(patient)
     db.session.commit()
